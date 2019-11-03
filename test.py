@@ -1,7 +1,6 @@
-from math import sqrt
+from itertools import product
 
-
-class Taczka():
+class Obiekt():
 
     def __init__(self, rodzic, pozycja):
         self.rodzic = rodzic
@@ -11,51 +10,30 @@ class Taczka():
         self.h = 0
         self.f = 0
 
+    def __eq__(self, other):
+        return self.pozycja == other.pozycja
 
 
-koniec1 = Taczka(None, (0,0))
-koniec1.f = 2
-koniec2 = Taczka(None, (0,0))
-koniec2.f = 3
-koniec3 = Taczka(None, (0,0))
-koniec3.f = 1
+
+koniec1 = Obiekt(None, (1,9))
+koniec2 = Obiekt(None, (9,9))
+koniec3 = Obiekt(None, (1,9))
+koniec4 = Obiekt(None, (9,9))
 
 
-lista_otwarta = [koniec1, koniec2, koniec3]
-lista_zamknieta = []
+koniec5 = Obiekt(None, (0,9))
 
-wartosc_najmniejsza = lista_otwarta[0]
-index_wartosci_najmniejszej = 0
+lista_otwarta = [koniec1,koniec2,koniec3,koniec4]
 
-for i in range(1, len(lista_otwarta)):
-    if wartosc_najmniejsza.f >= lista_otwarta[i].f:
-        wartosc_najmniejsza = lista_otwarta[i]
-        index_wartosci_najmniejszej = i
+tablica = [koniec5,koniec4]
 
-lista_zamknieta.append(wartosc_najmniejsza)
-lista_otwarta.pop(index_wartosci_najmniejszej)
 
-for i in lista_zamknieta:
-    print(str(i.f) + "zamk")
+for i in range(4):
+    for x in tablica:
+        if x not in lista_otwarta:
+            lista_otwarta.append(x)
+            continue
+    print(i)
 
 for i in lista_otwarta:
-    print(i.f)
-
-
-
-
-
-xd = sqrt(((1 - 19) ** 2 + (0 - koniec.pozycja[1] ** 2)))
-
-
-
-
-
-
-
-
-
-
-
-
-
+    print(i.pozycja)

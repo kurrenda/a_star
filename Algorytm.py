@@ -10,9 +10,15 @@ class Obiekt():
         self.h = 0
         self.f = 0
 
+    def __eq__(self, other):
+        return self.pozycja == other.pozycja
+
+
+
+
+
 
 def agwiazdka(mapa):
-
 
     start = Obiekt(None, (0,0))
     start.g = 0
@@ -34,8 +40,6 @@ def agwiazdka(mapa):
     dlugosc_x_mapy = len(mapa)-1
     dlugosc_y_mapy = len(mapa[0])-1
 
-    print(dlugosc_x_mapy,dlugosc_y_mapy)
-
     while len(lista_otwarta) > 0:
 
         aktualna_pozycja = lista_zamknieta[len(lista_zamknieta)-1].pozycja
@@ -47,24 +51,34 @@ def agwiazdka(mapa):
 
         pozycje_wokol_aktualnej = [lewo,prawo,gora,dol]
 
+
         for kierunek in pozycje_wokol_aktualnej:
 
             if 0 <= kierunek.pozycja[0] <= dlugosc_x_mapy and 0 <= kierunek.pozycja[1] <= dlugosc_y_mapy:
 
-                print(kierunek.pozycja[0], kierunek.pozycja[1], mapa[kierunek.pozycja[0]][kierunek.pozycja[1]])
                 if mapa[kierunek.pozycja[0]][kierunek.pozycja[1]] == 5:
                     continue
 
-                kierunek.g = kierunek.g + 1
-                kierunek.h = sqrt(((kierunek.pozycja[0] - koniec.pozycja[0]) ** 2 + (kierunek.pozycja[1] - koniec.pozycja[1]) ** 2))
-                kierunek.f = kierunek.g + kierunek.h
+                elif kierunek in lista_otwarta:
+                    continue
 
-                for obiekt in lista_zamknieta:
-                    if kierunek.pozycja == obiekt.pozycja:
-                        if kierunek.f < obiekt.f:
-                            obiekt.rodzic = kierunek.rodzic
+                else:
+                    kierunek.g = kierunek.g + 1
+                    kierunek.h = sqrt(((kierunek.pozycja[0] - koniec.pozycja[0]) ** 2 + (kierunek.pozycja[1] - koniec.pozycja[1]) ** 2))
+                    kierunek.f = kierunek.g + kierunek.h
+                    kierunek.rodzic = aktualna_pozycja
 
-                lista_otwarta.append(kierunek)
+                    for obiekt in lista_zamknieta:
+                        if kierunek.pozycja == obiekt.pozycja:
+                            if kierunek.f < obiekt.f:
+                                obiekt.rodzic = kierunek.rodzic
+
+                    lista_otwarta.append(kierunek)
+
+        for i in lista_otwarta:
+            print(i.pozycja)
+
+        print("haha")
 
         wartosc_najmniejsza = lista_otwarta[0]
         index_wartosci_najmniejszej = 0
@@ -73,6 +87,7 @@ def agwiazdka(mapa):
             if wartosc_najmniejsza.f >= lista_otwarta[i].f:
                 wartosc_najmniejsza = lista_otwarta[i]
                 index_wartosci_najmniejszej = i
+
 
         lista_zamknieta.append(wartosc_najmniejsza)
         lista_otwarta.pop(index_wartosci_najmniejszej)
@@ -86,22 +101,25 @@ def agwiazdka(mapa):
 
 
     for i in lista_zamknieta:
-        print(i.pozycja, end='')
+        print(i.pozycja)
+        mapa[i.pozycja[0]][i.pozycja[1]] = 3
+
+
 
 def main():
 
-    maze = [[0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
+    maze = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             [0, 0, 0, 0, 5, 0, 0, 0, 0, 0],
             [0, 0, 0, 0, 5, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]
+            [0, 0, 0, 0, 5, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 5, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 5, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 5, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 5, 0, 0, 0, 0, 0],
+            [0, 0, 0, 0, 5, 0, 0, 0, 0, 0]]
 
-    print(maze[0][4])
+
 
     agwiazdka(maze)
 
