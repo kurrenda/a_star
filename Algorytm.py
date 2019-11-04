@@ -16,12 +16,12 @@ class Obiekt():
 
 def agwiazdka(mapa):
 
-    start = Obiekt(None, (2,0))
+    start = Obiekt(None, (0,19))
     start.g = 0
     start.h = 0
     start.f = 0
 
-    koniec = Obiekt(None, (9,9))
+    koniec = Obiekt(None, (19,0))
     koniec.g = 0
     koniec.h = 0
     koniec.f = 0
@@ -123,6 +123,15 @@ def agwiazdka(mapa):
 
 
 def main():
+    mapa = []
+
+    with open('grid.txt', 'r') as f:
+        x = f.read().splitlines()
+        for i in x:
+            mapa.append(i.split(" "))
+
+    mapa_uporzadkowana = [[int(c) for c in line] for line in mapa]
+
 
             #0 #1 #2 #3 #4 #5 #6 #7 #8 #9
 
@@ -138,14 +147,15 @@ def main():
             [0, 0, 0, 0, 5, 0, 0, 0, 0, 0]]  #9
 
 
-    sciezka = agwiazdka(maze)
+    sciezka = agwiazdka(mapa_uporzadkowana)
 
     for i in sciezka:
         print(i)
-        maze[i[0]][i[1]] = 3
+        mapa_uporzadkowana[i[0]][i[1]] = 3
 
-    for i in maze:
+    for i in mapa_uporzadkowana:
         print(i)
+
 
 
 
