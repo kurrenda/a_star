@@ -41,10 +41,10 @@ def agwiazdka(mapa):
         aktualna_pozycja = lista_zamknieta[len(lista_zamknieta)-1].pozycja
         aktualna_pozycja_rodzic = lista_zamknieta[len(lista_zamknieta) - 1]
 
+        gora = Obiekt(aktualna_pozycja, (aktualna_pozycja[0], aktualna_pozycja[1] + 1))
+        dol = Obiekt(aktualna_pozycja, (aktualna_pozycja[0], aktualna_pozycja[1] - 1))
         lewo = Obiekt(aktualna_pozycja,(aktualna_pozycja[0]-1, aktualna_pozycja[1]))
         prawo = Obiekt(aktualna_pozycja,(aktualna_pozycja[0]+1, aktualna_pozycja[1]))
-        gora = Obiekt(aktualna_pozycja,(aktualna_pozycja[0], aktualna_pozycja[1]+1))
-        dol = Obiekt(aktualna_pozycja,(aktualna_pozycja[0], aktualna_pozycja[1]-1))
 
         pozycje_wokol_aktualnej = [lewo,prawo,gora,dol]
 
@@ -81,13 +81,6 @@ def agwiazdka(mapa):
 
                     lista_otwarta.append(kierunek)
 
-        for i in lista_zamknieta:
-            print(i.pozycja)
-
-
-
-        print("haha")
-
         wartosc_najmniejsza = lista_otwarta[0]
         index_wartosci_najmniejszej = 0
 
@@ -112,6 +105,15 @@ def agwiazdka(mapa):
             while krok.pozycja != start.pozycja:
                 krok = krok.rodzic
                 sciezka.append(krok.pozycja)
+
+            for i in sciezka:
+                mapa[i[0]][i[1]] = 3
+
+
+            for i in mapa:
+                print(i)
+
+            sciezka.reverse()
 
             return sciezka
 
@@ -147,14 +149,9 @@ def main():
             [0, 0, 0, 0, 5, 0, 0, 0, 0, 0]]  #9
 
 
-    sciezka = agwiazdka(mapa_uporzadkowana)
+    print(agwiazdka(mapa_uporzadkowana))
 
-    for i in sciezka:
-        print(i)
-        mapa_uporzadkowana[i[0]][i[1]] = 3
 
-    for i in mapa_uporzadkowana:
-        print(i)
 
 
 
