@@ -28,11 +28,7 @@ lista_otwarta = [koniec1,koniec2,koniec3,koniec4]
 tablica = [koniec5,koniec4]
 
 
-for i in range(4):
-    for x in tablica:
-        if x not in lista_otwarta:
-            lista_otwarta.append(x)
-            continue
+
     print(i)
 
 for i in lista_otwarta:
