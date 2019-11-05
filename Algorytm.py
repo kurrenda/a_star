@@ -114,7 +114,8 @@ def agwiazdka(mapa):
                     lista_otwarta.append(kierunek)
 
         if wartosc_najmniejsza.pozycja == koniec.pozycja:
-            print("Udało się dotrzeć do celu")
+            print("Udało się dotrzeć do celu", "\n")
+
 
             sciezka = []
 
@@ -132,6 +133,8 @@ def agwiazdka(mapa):
             for i in mapa:
                 print(i)
 
+            print(" ")
+
             sciezka.reverse()
 
             return sciezka
@@ -139,6 +142,7 @@ def agwiazdka(mapa):
     else:
 
         print("Nie udało się dotrzeć do celu")
+        print("\n")
 
 
 def main():
@@ -152,9 +156,12 @@ def main():
 
     mapa_uporzadkowana = [[int(c) for c in line] for line in mapa]
 
+    print("Mapa wejściowa", "\n")
+
     for i in mapa_uporzadkowana:
         print(i)
 
+    print(" ")
             #0 #1 #2 #3 #4 #5 #6 #7 #8 #9
 
     maze = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],  #0
