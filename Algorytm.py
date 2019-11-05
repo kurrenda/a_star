@@ -31,12 +31,45 @@ def agwiazdka(mapa):
     lista_zamknieta = []
 
     lista_zamknieta.append(start)
-    lista_otwarta.append(start)
 
     dlugosc_x_mapy = len(mapa)-1
     dlugosc_y_mapy = len(mapa[0])-1
 
+    aktualna_pozycja = lista_zamknieta[len(lista_zamknieta) - 1].pozycja
+    aktualna_pozycja_rodzic = lista_zamknieta[len(lista_zamknieta) - 1]
+
+    gora = Obiekt(aktualna_pozycja, (aktualna_pozycja[0], aktualna_pozycja[1] + 1))
+    dol = Obiekt(aktualna_pozycja, (aktualna_pozycja[0], aktualna_pozycja[1] - 1))
+    lewo = Obiekt(aktualna_pozycja, (aktualna_pozycja[0] - 1, aktualna_pozycja[1]))
+    prawo = Obiekt(aktualna_pozycja, (aktualna_pozycja[0] + 1, aktualna_pozycja[1]))
+
+    pozycje_wokol_aktualnej = [gora, dol, lewo, prawo]
+
+    for kierunek in pozycje_wokol_aktualnej:
+
+        if 0 <= kierunek.pozycja[0] <= dlugosc_x_mapy and 0 <= kierunek.pozycja[1] <= dlugosc_y_mapy:
+
+            kierunek.g = aktualna_pozycja_rodzic.g + 1
+            kierunek.h = sqrt(((kierunek.pozycja[0] - koniec.pozycja[0]) ** 2 + (
+                    kierunek.pozycja[1] - koniec.pozycja[1]) ** 2))
+            kierunek.f = kierunek.g + kierunek.h
+            kierunek.rodzic = aktualna_pozycja_rodzic
+
+            lista_otwarta.append(kierunek)
+
+
     while len(lista_otwarta) > 0:
+
+        wartosc_najmniejsza = lista_otwarta[0]
+        index_wartosci_najmniejszej = 0
+
+        for i in range(1, len(lista_otwarta)):
+            if wartosc_najmniejsza.f >= lista_otwarta[i].f:
+                wartosc_najmniejsza = lista_otwarta[i]
+                index_wartosci_najmniejszej = i
+
+        lista_zamknieta.append(wartosc_najmniejsza)
+        lista_otwarta.pop(index_wartosci_najmniejszej)
 
         aktualna_pozycja = lista_zamknieta[len(lista_zamknieta)-1].pozycja
         aktualna_pozycja_rodzic = lista_zamknieta[len(lista_zamknieta) - 1]
@@ -46,8 +79,7 @@ def agwiazdka(mapa):
         lewo = Obiekt(aktualna_pozycja,(aktualna_pozycja[0]-1, aktualna_pozycja[1]))
         prawo = Obiekt(aktualna_pozycja,(aktualna_pozycja[0]+1, aktualna_pozycja[1]))
 
-        pozycje_wokol_aktualnej = [lewo,prawo,gora,dol]
-
+        pozycje_wokol_aktualnej = [gora,dol,lewo,prawo]
 
         for kierunek in pozycje_wokol_aktualnej:
 
@@ -61,7 +93,7 @@ def agwiazdka(mapa):
 
                 elif kierunek in lista_zamknieta:
 
-                    kierunek.g = kierunek.g + 1
+                    kierunek.g = aktualna_pozycja_rodzic.g + 1
                     kierunek.h = sqrt(((kierunek.pozycja[0] - koniec.pozycja[0]) ** 2 + (
                                 kierunek.pozycja[1] - koniec.pozycja[1]) ** 2))
                     kierunek.f = kierunek.g + kierunek.h
@@ -74,24 +106,12 @@ def agwiazdka(mapa):
                     continue
 
                 else:
-                    kierunek.g = kierunek.g + 1
+                    kierunek.g = aktualna_pozycja_rodzic.g + 1
                     kierunek.h = sqrt(((kierunek.pozycja[0] - koniec.pozycja[0]) ** 2 + (kierunek.pozycja[1] - koniec.pozycja[1]) ** 2))
                     kierunek.f = kierunek.g + kierunek.h
                     kierunek.rodzic = aktualna_pozycja_rodzic
 
                     lista_otwarta.append(kierunek)
-
-        wartosc_najmniejsza = lista_otwarta[0]
-        index_wartosci_najmniejszej = 0
-
-        for i in range(1, len(lista_otwarta)):
-            if wartosc_najmniejsza.f >= lista_otwarta[i].f:
-                wartosc_najmniejsza = lista_otwarta[i]
-                index_wartosci_najmniejszej = i
-
-
-        lista_zamknieta.append(wartosc_najmniejsza)
-        lista_otwarta.pop(index_wartosci_najmniejszej)
 
         if wartosc_najmniejsza.pozycja == koniec.pozycja:
             print("Udało się dotrzeć do celu")
@@ -109,7 +129,6 @@ def agwiazdka(mapa):
             for i in sciezka:
                 mapa[i[0]][i[1]] = 3
 
-
             for i in mapa:
                 print(i)
 
@@ -117,14 +136,13 @@ def agwiazdka(mapa):
 
             return sciezka
 
-
-
-
     else:
+
         print("Nie udało się dotrzeć do celu")
 
 
 def main():
+
     mapa = []
 
     with open('grid.txt', 'r') as f:
@@ -134,26 +152,23 @@ def main():
 
     mapa_uporzadkowana = [[int(c) for c in line] for line in mapa]
 
+    for i in mapa_uporzadkowana:
+        print(i)
 
             #0 #1 #2 #3 #4 #5 #6 #7 #8 #9
 
-    maze = [[0, 0, 5, 0, 0, 0, 0, 0, 0, 0],  #0
-            [0, 0, 5, 0, 5, 0, 0, 0, 0, 0],  #1
-            [0, 0, 5, 0, 5, 0, 0, 0, 0, 0],  #2
-            [0, 0, 5, 0, 5, 0, 0, 0, 0, 0],  #3
-            [0, 0, 5, 0, 5, 0, 0, 0, 0, 0],  #4
-            [0, 0, 5, 0, 5, 0, 0, 0, 0, 0],  #5
-            [0, 0, 5, 0, 5, 0, 0, 0, 0, 0],  #6
+    maze = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],  #0
+            [0, 5, 0, 0, 5, 0, 0, 0, 0, 0],  #1
+            [0, 0, 0, 0, 5, 0, 0, 0, 0, 0],  #2
+            [0, 0, 0, 0, 5, 0, 0, 0, 0, 0],  #3
+            [0, 0, 0, 0, 5, 0, 0, 0, 0, 0],  #4
+            [0, 0, 0, 0, 5, 0, 0, 0, 0, 0],  #5
+            [0, 0, 0, 0, 5, 0, 0, 0, 0, 0],  #6
             [0, 0, 0, 0, 5, 0, 0, 0, 0, 0],  #7
             [0, 0, 0, 0, 5, 0, 0, 0, 0, 0],  #8
             [0, 0, 0, 0, 5, 0, 0, 0, 0, 0]]  #9
 
-
     print(agwiazdka(mapa_uporzadkowana))
-
-
-
-
 
 
 if __name__ == '__main__':

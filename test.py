@@ -29,7 +29,7 @@ tablica = [koniec5,koniec4]
 
 
 
-    print(i)
+
 
 for i in lista_otwarta:
     print(i.pozycja)
